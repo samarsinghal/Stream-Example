@@ -21,55 +21,44 @@ In the walkthrough, we are using Cloud Foundry spring cloud gateway service and 
 
 === Step 2 - Create RabbitMQ Service Instance
 
-        ```bash
-        cf create-service p.rabbitmq single-node rabbitmq
-        ```
+    $ cf create-service p.rabbitmq single-node rabbitmq
 
 === Step 3 - Build
 
     You can build .jar files like so:
 
-        ```bash
-        mvn clean package -f source/pom.xml
-        mvn clean package -f processor/pom.xml
-        mvn clean package -f sink/pom.xml
-        ```
+    $ mvn clean package -f source/pom.xml
+    $ mvn clean package -f processor/pom.xml
+    $ mvn clean package -f sink/pom.xml
 
 === Step 4 - Run/Deploy application to Cloud Foundary
 
     Update deployment manifest to add RabbitMQ service binding:
 
-        ```bash
-        cf push
-        ```
+    $ cf push
 
 ### Step 5 - Test
 
     It will take a few minutes to start and then you can view the logs to see the messages get processed:
 
-        ```bash
-        curl --location --request GET '<APPLICATION-HOST>/rabbitmq/orderCoffee?coffeeId=123&coffeeName=Cappuccino'
-        ```
+    $ curl --location --request GET '<APPLICATION-HOST>/rabbitmq/orderCoffee?coffeeId=123&coffeeName=Cappuccino'
 
     You should see output that looks like this:
 
-        ```bash
-        cf logs Source
-        ```
-        OUT Coffee(id=123, name=Cappuccino)
+    $ cf logs Source
 
-        ```bash
-        cf logs Processor
-        ```
-        Coffee(id=123, name=Cappuccino)
-        OUT Bill(id=123, name=Cappuccino, price=5.0)
+      OUT Coffee(id=123, name=Cappuccino)
 
-        ```bash
-        cf logs Sink
-        ```
-        OUT Bill(id=123, name=Cappuccino, price=5.0)
+    $ cf logs Processor
+
+      Coffee(id=123, name=Cappuccino)
+      OUT Bill(id=123, name=Cappuccino, price=5.0)
+
+    $ cf logs Sink
+
+      OUT Bill(id=123, name=Cappuccino, price=5.0)
 
     On RabbitMQ dashboard yo should see below two topic exchange and coffee queue. Monitor messages in the queue.
 
-        Order 
-        Billing
+      Order 
+      Billing

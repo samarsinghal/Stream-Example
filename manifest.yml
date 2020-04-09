@@ -1,0 +1,32 @@
+applications:
+- name: Source
+  path: source/target/source-0.0.1-SNAPSHOT.jar
+  buildpack: https://github.com/cloudfoundry/java-buildpack.git
+  memory: 1G
+  services:
+  - rabbitmq
+
+
+  SPRING_PROFILES_ACTIVE: cloud
+
+
+- name: Processor
+  path: processor/target/processor-0.0.1-SNAPSHOT.jar
+  buildpack: https://github.com/cloudfoundry/java-buildpack.git
+  memory: 1G
+  services:
+  - rabbitmq
+
+
+  SPRING_PROFILES_ACTIVE: cloud
+
+
+- name: Sink
+  path: sink/target/sink-0.0.1-SNAPSHOT.jar
+  buildpack: https://github.com/cloudfoundry/java-buildpack.git
+  memory: 1G
+  services:
+  - rabbitmq
+
+
+  SPRING_PROFILES_ACTIVE: cloud
